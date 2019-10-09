@@ -1,0 +1,18 @@
+---
+title: "JHU_DS_Course"
+author: "Ehsan Ullah"
+date: "10/9/2019"
+output: html_document
+---
+
+##Getting and Cleaning Data
+##Week 1
+
+###The data.table Package
+
+
+```{r}
+
+
+
+```
