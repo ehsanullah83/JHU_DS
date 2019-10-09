@@ -132,6 +132,29 @@ $(document).ready(function () {
 <h2>Week 1</h2>
 <div id="the-data.table-package" class="section level3">
 <h3>The data.table Package</h3>
+<div id="create-data-tables-like-data-frames." class="section level4">
+<h4>Create data tables like data frames.</h4>
+<pre class="r"><code>library(data.table)
+
+DF = data.frame(x=rnorm(9), y=rep(c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;), each=3), z=rnorm(9))
+
+head(DF, 3)</code></pre>
+<pre><code>##            x y          z
+## 1 -0.4135550 a  0.1594841
+## 2 -0.4632494 a  0.4664299
+## 3  0.2763569 a -0.3780352</code></pre>
+<pre class="r"><code>DT = data.table(x=rnorm(9), y=rep(c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;), each=3), z=rnorm(9))
+
+head(DT, 3)</code></pre>
+<pre><code>##             x y           z
+## 1: -2.3155777 a  0.92529665
+## 2:  0.6921226 a -0.08473396
+## 3: -0.7195721 a -2.37271103</code></pre>
+<pre class="r"><code>tables() #shows the details about all the data tables in the workspace. </code></pre>
+<pre><code>##      NAME NROW NCOL MB COLS  KEY
+## [1,] DT      9    3  1 x,y,z    
+## Total: 1MB</code></pre>
+</div>
 </div>
 </div>
 
