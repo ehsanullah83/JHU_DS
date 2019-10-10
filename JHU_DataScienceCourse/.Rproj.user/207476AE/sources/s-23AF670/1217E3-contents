@@ -10,8 +10,7 @@ output: html_document
 
 ###The data.table Package
 
-#### Create data tables like data frames.
-```{r}
+```{r Create data tables like data frames}
 library(data.table)
 
 DF = data.frame(x=rnorm(9), y=rep(c("a","b","c"), each=3), z=rnorm(9))
@@ -23,5 +22,77 @@ DT = data.table(x=rnorm(9), y=rep(c("a","b","c"), each=3), z=rnorm(9))
 head(DT, 3)
 
 tables() #shows the details about all the data tables in the workspace. 
+
+```
+
+### Subsetting rows
+
+```{r subsetting rows}
+DT[2,]
+
+DT[DT$y=="a",]
+
+DT[c(2,3)] # single index will extract only rows and not columns.
+
+```
+
+### Subsetting columns
+```{r subsetting columns}
+DT[,c(2,3)] #in course it says it does something different but infact it really extracted second and third columns
+
+```
+
+
+```{r hello world}
+
+
+```
+
+
+```{r}
+
+
+```
+
+
+```{r}
+
+
+```
+
+```{r}
+
+
+```
+
+```{r}
+
+
+```
+
+
+```{r}
+
+
+```
+
+
+```{r}
+
+
+```
+
+```{r}
+
+
+```
+
+```{r}
+
+
+```
+
+```{r}
+
 
 ```
