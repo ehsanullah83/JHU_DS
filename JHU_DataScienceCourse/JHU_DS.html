@@ -127,6 +127,9 @@ $(document).ready(function () {
 
 <div id="week-1" class="section level2">
 <h2>Week 1</h2>
+<div id="video-lecture-9" class="section level3">
+<h3>Video Lecture 9</h3>
+</div>
 <div id="the-data.table-package" class="section level3">
 <h3>The data.table Package</h3>
 <pre class="r"><code>library(data.table)
@@ -134,18 +137,18 @@ $(document).ready(function () {
 DF = data.frame(x=rnorm(9), y=rep(c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;), each=3), z=rnorm(9))
 
 head(DF, 3)</code></pre>
-<pre><code>##              x y          z
-## 1 -1.059417788 a  0.1025055
-## 2 -0.002353936 a -0.4935010
-## 3  0.797876594 a  0.6345866</code></pre>
+<pre><code>##           x y          z
+## 1 0.1720968 a -0.1576684
+## 2 1.3503311 a -0.9242034
+## 3 1.1053267 a -0.6523950</code></pre>
 <pre class="r"><code>DT = data.table(x=rnorm(9), y=rep(c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;), each=3), z=rnorm(9))
 
 head(DT, 3)</code></pre>
-<pre><code>##              x y          z
-## 1: -0.01489693 a -0.9142139
-## 2:  1.33434926 a  0.4936423
-## 3: -0.16143227 a  0.8563867</code></pre>
-<pre class="r"><code>tables() #shows the details about all the data tables in the workspace. </code></pre>
+<pre><code>##             x y         z
+## 1: -0.6139641 a 1.7572841
+## 2:  0.3646256 a 1.3874379
+## 3: -0.7423090 a 0.5480674</code></pre>
+<pre class="r"><code>tables() #shows the details about all the data tables in the workspace. different than table() command. it has an S in the end.</code></pre>
 <pre><code>##      NAME NROW NCOL MB COLS  KEY
 ## [1,] DT      9    3  1 x,y,z    
 ## Total: 1MB</code></pre>
@@ -153,31 +156,195 @@ head(DT, 3)</code></pre>
 <div id="subsetting-rows" class="section level3">
 <h3>Subsetting rows</h3>
 <pre class="r"><code>DT[2,]</code></pre>
-<pre><code>##           x y         z
-## 1: 1.334349 a 0.4936423</code></pre>
+<pre><code>##            x y        z
+## 1: 0.3646256 a 1.387438</code></pre>
 <pre class="r"><code>DT[DT$y==&quot;a&quot;,]</code></pre>
-<pre><code>##              x y          z
-## 1: -0.01489693 a -0.9142139
-## 2:  1.33434926 a  0.4936423
-## 3: -0.16143227 a  0.8563867</code></pre>
+<pre><code>##             x y         z
+## 1: -0.6139641 a 1.7572841
+## 2:  0.3646256 a 1.3874379
+## 3: -0.7423090 a 0.5480674</code></pre>
 <pre class="r"><code>DT[c(2,3)] # single index will extract only rows and not columns.</code></pre>
 <pre><code>##             x y         z
-## 1:  1.3343493 a 0.4936423
-## 2: -0.1614323 a 0.8563867</code></pre>
+## 1:  0.3646256 a 1.3874379
+## 2: -0.7423090 a 0.5480674</code></pre>
 </div>
 <div id="subsetting-columns" class="section level3">
 <h3>Subsetting columns</h3>
 <pre class="r"><code>DT[,c(2,3)] #in course it says it does something different but infact it really extracted second and third columns</code></pre>
 <pre><code>##    y          z
-## 1: a -0.9142139
-## 2: a  0.4936423
-## 3: a  0.8563867
-## 4: b  0.2196006
-## 5: b  0.6510080
-## 6: b -1.3539885
-## 7: c  0.8341597
-## 8: c  0.5602783
-## 9: c -0.1099030</code></pre>
+## 1: a  1.7572841
+## 2: a  1.3874379
+## 3: a  0.5480674
+## 4: b -0.7649343
+## 5: b  0.9867112
+## 6: b  0.3518946
+## 7: c  0.7014185
+## 8: c -2.1460161
+## 9: c -1.6931394</code></pre>
+</div>
+<div id="column-subsetting-in-data.table" class="section level3">
+<h3>Column subsetting in data.table()</h3>
+<ul>
+<li>Subsetting function in R is modified for data.table().</li>
+<li>The argument you pass after “comma” is called an “expression”.</li>
+<li>In R an expression is collection of statments enclosed in curly brackets.</li>
+</ul>
+<pre class="r"><code>{ 
+        x = 1
+        y = 2
+}
+
+k = {print(10); 5}</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>print(k)</code></pre>
+<pre><code>## [1] 5</code></pre>
+</div>
+<div id="calculating-values-for-variables-with-expressions." class="section level3">
+<h3>Calculating values for variables with expressions.</h3>
+<pre class="r"><code>DT[, list(mean(x), sum(z))] # No quotation marks required.</code></pre>
+<pre><code>##            V1       V2
+## 1: 0.02163914 1.128724</code></pre>
+<pre class="r"><code>DT[,table(y)]</code></pre>
+<pre><code>## y
+## a b c 
+## 3 3 3</code></pre>
+</div>
+<div id="adding-new-columns" class="section level3">
+<h3>Adding new columns</h3>
+<pre class="r"><code>DT[, w:=z^2]
+
+head(DT, 3)</code></pre>
+<pre><code>##             x y         z         w
+## 1: -0.6139641 a 1.7572841 3.0880476
+## 2:  0.3646256 a 1.3874379 1.9249838
+## 3: -0.7423090 a 0.5480674 0.3003778</code></pre>
+<pre class="r"><code>#Warning: This will change the original dataset DT.
+
+DT[, y:=2]</code></pre>
+<pre><code>## Warning in `[.data.table`(DT, , `:=`(y, 2)): Coerced 'double' RHS to
+## 'character' to match the column's type; may have truncated precision.
+## Either change the target column to 'double' first (by creating a new
+## 'double' vector length 9 (nrows of entire table) and assign that; i.e.
+## 'replace' column), or coerce RHS to 'character' (e.g. 1L, NA_[real|
+## integer]_, as.*, etc) to make your intent clear and for speed. Or, set the
+## column type correctly up front when you create the table and stick to it,
+## please.</code></pre>
+<pre class="r"><code>head(DT, 3)</code></pre>
+<pre><code>##             x y         z         w
+## 1: -0.6139641 2 1.7572841 3.0880476
+## 2:  0.3646256 2 1.3874379 1.9249838
+## 3: -0.7423090 2 0.5480674 0.3003778</code></pre>
+<pre class="r"><code>#To create a copy of a data.table, use copy function.
+DT4 &lt;- copy(DT) </code></pre>
+</div>
+<div id="multiple-operations" class="section level3">
+<h3>Multiple operations</h3>
+<pre class="r"><code>DT[, m := {tmp &lt;- (x + z); log2(tmp+5)}]
+
+head(DT, 4)</code></pre>
+<pre><code>##             x y          z         w        m
+## 1: -0.6139641 2  1.7572841 3.0880476 2.619019
+## 2:  0.3646256 2  1.3874379 1.9249838 2.755328
+## 3: -0.7423090 2  0.5480674 0.3003778 2.264764
+## 4:  1.8463768 2 -0.7649343 0.5851246 2.604414</code></pre>
+</div>
+<div id="plyr-like-operations" class="section level3">
+<h3>plyr like operations</h3>
+<pre class="r"><code>DT[, a:= x&gt;0]
+
+head (DT, 3)</code></pre>
+<pre><code>##             x y         z         w        m     a
+## 1: -0.6139641 2 1.7572841 3.0880476 2.619019 FALSE
+## 2:  0.3646256 2 1.3874379 1.9249838 2.755328  TRUE
+## 3: -0.7423090 2 0.5480674 0.3003778 2.264764 FALSE</code></pre>
+<pre class="r"><code># We can apply different functions after grouping the variables by a. for example
+
+DT[, b:=mean(x+w), by=a]
+
+head(DT) # We can see two different types of means, one for TRUE and one for FALSE of a. </code></pre>
+<pre><code>##             x y          z         w        m     a         b
+## 1: -0.6139641 2  1.7572841 3.0880476 2.619019 FALSE 0.9363847
+## 2:  0.3646256 2  1.3874379 1.9249838 2.755328  TRUE 2.2818540
+## 3: -0.7423090 2  0.5480674 0.3003778 2.264764 FALSE 0.9363847
+## 4:  1.8463768 2 -0.7649343 0.5851246 2.604414  TRUE 2.2818540
+## 5: -1.6436222 2  0.9867112 0.9735991 2.118722 FALSE 0.9363847
+## 6:  0.3453180 2  0.3518946 0.1238298 2.510256  TRUE 2.2818540</code></pre>
+</div>
+<div id="special-variables" class="section level3">
+<h3>Special variables</h3>
+<pre class="r"><code># .N An integer, length 1, contaning the nubmers
+DT3 &lt;- data.table(x=sample(letters[1:3], 1e5, TRUE))
+
+DT3[, .N, by=x]</code></pre>
+<pre><code>##    x     N
+## 1: a 33558
+## 2: b 33182
+## 3: c 33260</code></pre>
+</div>
+<div id="keys" class="section level3">
+<h3>Keys</h3>
+<pre class="r"><code>DT5 &lt;- data.table(x=rep(c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;), each=1000), y=rnorm(900))</code></pre>
+<pre><code>## Warning in data.table(x = rep(c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;), each = 1000), y =
+## rnorm(900)): Item 2 is of size 900 but maximum size is 3000 (recycled
+## leaving remainder of 300 items)</code></pre>
+<pre class="r"><code>head(DT5, 5)</code></pre>
+<pre><code>##    x           y
+## 1: a  0.75527207
+## 2: a  0.02972912
+## 3: a -0.84954716
+## 4: a  2.41796178
+## 5: a -0.76868523</code></pre>
+<pre class="r"><code>setkey(DT5, x)
+
+DT5['c'] # it will look ONLY for c in x, which is the key).</code></pre>
+<pre><code>##       x          y
+##    1: c -0.8065885
+##    2: c  1.1448838
+##    3: c  0.2459059
+##    4: c  1.8743587
+##    5: c  0.7211860
+##   ---             
+##  996: c  0.5341225
+##  997: c  0.1903404
+##  998: c -0.9467373
+##  999: c  0.1112053
+## 1000: c -0.5329551</code></pre>
+</div>
+<div id="joins" class="section level3">
+<h3>Joins</h3>
+<pre class="r"><code>DT6 &lt;- data.table(x=c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;dt1&quot;), y=1:4)
+DT7 &lt;- data.table(x=c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;dt2&quot;), z=5:7)</code></pre>
+<pre><code>## Warning in data.table(x = c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;dt2&quot;), z = 5:7): Item 2 is of
+## size 3 but maximum size is 4 (recycled leaving remainder of 1 items)</code></pre>
+<pre class="r"><code>setkey(DT6, x); setkey(DT7, x)
+
+merge(DT6, DT7)</code></pre>
+<pre><code>##    x y z
+## 1: a 1 5
+## 2: b 2 6
+## 3: c 3 7</code></pre>
+</div>
+<div id="reading-time-faster-in-data.table" class="section level3">
+<h3>Reading time faster in data.table()</h3>
+<pre class="r"><code>big_df &lt;- data.frame(x=rnorm(1E6), y=rnorm(1E6))
+
+file &lt;- tempfile()
+
+write.table(big_df, file=file, row.names = FALSE, col.names = TRUE, sep= &quot;\t&quot;, quote=FALSE)
+
+system.time(fread(file))</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.297   0.011   0.310</code></pre>
+<pre class="r"><code>system.time(read.table(file, header=TRUE, sep=&quot;\t&quot;)) # This is really slow.</code></pre>
+<pre><code>##    user  system elapsed 
+##   7.409   0.085   7.503</code></pre>
+</div>
+<div id="remove-unncecessary-data." class="section level3">
+<h3>Remove unncecessary data.</h3>
+<pre class="r"><code>rm(big_df)
+rm(DT3)
+rm(DT5)
+rm(file)</code></pre>
 </div>
 </div>
 
